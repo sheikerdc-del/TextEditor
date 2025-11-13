@@ -1,0 +1,18 @@
+/* Светлая тема (по умолчанию) */
+:root {
+    --primary-color: #007bff;
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --border-color: #dee2e6;
+    --toolbar-bg: #f8f9fa;
+}
+
+.preset-neutral { background: #6c757d; color: white; }
+.preset-accent { background: #007bff; color: white; }
+.preset-success { background: #28a745; color: white; }
+.preset-warning { background: #ffc107; color: black; }
+.preset-error { background: #dc3545; color: white; }
+.preset-info { background: #17a2b8; color: white; }
+.preset-card { background: white; color: #333; border: 1px solid #dee2e6; box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075); }
+.preset-badge { background: #e9ecef; color: #495057; }
+.preset-quote { background: #f8f9fa; color: #6c757d; border-left: 4px solid #007bff; }
