@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Текстовый редактор</title>
+    <link rel="stylesheet" href="src/ui/layout.css">
+    <link rel="stylesheet" href="src/ui/themes/light.css" id="theme">
+</head>
+<body>
+    <div class="editor-container" id="editorContainer">
+        <!-- Верхняя панель инструментов -->
+        <div class="toolbar" id="toolbar">
+            <!-- Группа форматирования текста -->
+            <div class="toolbar-group">
+                <select class="toolbar-select format-select">
+                    <option value="p">Абзац</option>
+                    <option value="h1">Заголовок 1</option>
+                    <option value="h2">Заголовок 2</option>
+                    <option value="h3">Заголовок 3</option>
+                    <option value="h4">Заголовок 4</option>
+                    <option value="h5">Заголовок 5</option>
+                    <option value="h6">Заголовок 6</option>
+                    <option value="pre">Код</option>
+                </select>
+                
+                <select class="toolbar-select font-family">
+                    <option value="">Шрифт</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Courier New">Courier New</option>
+                </select>
+                
+                <select class="toolbar-select font-size">
+                    <option value="">Размер</option>
+                    <option value="12px">Мелкий</option>
+                    <option value="14px">Обычный</option>
+                    <option value="18px">Средний</option>
+                    <option value="24px">Крупный</option>
+                    <option value="32px">Огромный</option>
+                </select>
+            </div>
+
+            <!-- Группа стилей текста -->
+            <div class="toolbar-group">
+                <button class="toolbar-btn" data-command="bold" title="Жирный (Ctrl+B)">
+                    <strong>B</strong>
+                </button>
+                <button class="toolbar-btn" data-command="italic" title="Курсив (Ctrl+I)">
+                    <em>I</em>
+                </button>
+                <button class="toolbar-btn" data-command="underline" title="Подчёркивание (Ctrl+U)">
+                    <u>U</u>
+                </button>
+                <button class="toolbar-btn" data-command="strikeThrough" title="Зачёркивание">
+                    <s>S</s>
+                </button>
+                
+                <div class="dropdown">
+                    <button class="toolbar-btn dropdown-toggle" title="Цвет текста">
+                        🎨
+                    </button>
+                    <div class="dropdown-menu color-picker">
+                        <div class="color-grid">
+                            <div class="color-option" data-color="#000000" style="background: #000000"></div>
+                            <div class="color-option" data-color="#ff0000" style="background: #ff0000"></div>
+                            <div class="color-option" data-color="#00ff00" style="background: #00ff00"></div>
+                            <div class="color-option" data-color="#0000ff" style="background: #0000ff"></div>
+                            <div class="color-option" data-color="#ffff00" style="background: #ffff00"></div>
+                            <div class="color-option" data-color="#ff00ff" style="background: #ff00ff"></div>
+                            <div class="color-option" data-color="#00ffff" style="background: #00ffff"></div>
+                            <div class="color-option" data-color="#ffffff" style="background: #ffffff; border: 1px solid #ccc"></div>
+                        </div>
+                        <input type="color" class="custom-color">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Группа выравнивания -->
+            <div class="toolbar-group">
+                <button class="toolbar-btn" data-command="justifyLeft" title="По левому краю">
+                    ⬅
+                </button>
+                <button class="toolbar-btn" data-command="justifyCenter" title="По центру">
+                    ↔
+                </button>
+                <button class="toolbar-btn" data-command="justifyRight" title="По правому краю">
+                    ➡
+                </button>
+                <button class="toolbar-btn" data-command="justifyFull" title="По ширине">
+                    ⇄
+                </button>
+            </div>
+
+            <!-- Группа списков -->
+            <div class="toolbar-group">
+                <button class="toolbar-btn" data-command="insertUnorderedList" title="Маркированный список">
+                    • List
+                </button>
+                <button class="toolbar-btn" data-command="insertOrderedList" title="Нумерованный список">
+                    1. List
+                </button>
+                <button class="toolbar-btn" data-command="outdent" title="Уменьшить отступ">
+                    ←
+                </button>
+                <button class="toolbar-btn" data-command="indent" title="Увеличить отступ">
+                    →
+                </button>
+            </div>
+
+            <!-- Группа вставки -->
+            <div class="toolbar-group">
+                <button class="toolbar-btn" data-command="createLink" title="Вставить ссылку (Ctrl+K)">
+                    🔗
+                </button>
+                <button class="toolbar-btn image-upload-btn" title="Вставить изображение">
+                    🖼️
+                </button>
+                <button class="toolbar-btn" data-command="insertHorizontalRule" title="Горизонтальная линия">
+                    ―
+                </button>
+            </div>
+
+            <!-- Группа отмены/повтора -->
+            <div class="toolbar-group">
+                <button class="toolbar-btn" data-command="undo" title="Отменить (Ctrl+Z)">
+                    ↶
+                </button>
+                <button class="toolbar-btn" data-command="redo" title="Повторить (Ctrl+Y)">
+                    ↷
+                </button>
+                <button class="toolbar-btn" data-command="removeFormat" title="Очистить форматирование">
+                    🧹
+                </button>
+            </div>
+
+            <!-- Группа экспорта -->
+            <div class="toolbar-group export-group">
+                <button class="toolbar-btn export-html" title="Копировать HTML">
+                    HTML
+                </button>
+                <button class="toolbar-btn export-bbcode" title="Копировать BBCode">
+                    BB
+                </button>
+                <button class="toolbar-btn save-btn" title="Сохранить">
+                    💾
+                </button>
+            </div>
+
+            <!-- Переключатель режимов -->
+            <div class="toolbar-group mode-switcher">
+                <button class="mode-btn active" data-mode="visual">Визуальный</button>
+                <button class="mode-btn" data-mode="html">HTML</button>
+                <button class="mode-btn" data-mode="bbcode">BBCode</button>
+            </div>
+        </div>
+
+        <!-- Область редактирования -->
+        <div class="editor-content">
+            <div class="visual-editor" id="visualEditor" contenteditable="true"></div>
+            <textarea class="html-editor" id="htmlEditor" style="display: none;"></textarea>
+            <textarea class="bbcode-editor" id="bbcodeEditor" style="display: none;"></textarea>
+        </div>
+
+        <!-- Боковая панель -->
+        <div class="sidebar" id="sidebar">
+            <div class="style-presets">
+                <div class="preset" data-style="neutral">Нейтральная</div>
+                <div class="preset" data-style="accent">Акцентная</div>
+                <div class="preset" data-style="success">Успех</div>
+                <div class="preset" data-style="warning">Предупреждение</div>
+                <div class="preset" data-style="error">Ошибка</div>
+                <div class="preset" data-style="info">Информация</div>
+                <div class="preset" data-style="card">Карточка</div>
+                <div class="preset" data-style="badge">Бейдж</div>
+                <div class="preset" data-style="quote">Цитата</div>
+            </div>
+        </div>
+
+        <!-- Статус-бар -->
+        <div class="status-bar">
+            <span class="char-count">0 символов</span>
+            <span class="mode-indicator">Визуальный режим</span>
+            <span class="auto-save">Сохранено</span>
+        </div>
+    </div>
+
+    <script src="src/utils/helpers.js"></script>
+    <script src="src/core/EventEmitter.js"></script>
+    <script src="src/core/DocumentModel.js"></script>
+    <script src="src/core/CommandManager.js"></script>
+    <script src="src/modules/BBCodeParser.js"></script>
+    <script src="src/modules/HTMLSanitizer.js"></script>
+    <script src="src/modules/ImageManager.js"></script>
+    <script src="src/modules/StylePresets.js"></script>
+    <script src="src/modules/ExportManager.js"></script>
+    <script src="src/modules/EnhancedToolbar.js"></script>
+    <script src="src/core/Editor.js"></script>
+    <script>
+        const editor = new Editor({
+            container: '#editorContainer',
+            mode: 'visual'
+        });
+        
+        // Пример использования API
+        window.editor = editor;
+        
+        // Демонстрация работы
+        setTimeout(() => {
+            editor.setContent('<h1>Добро пожаловать!</h1><p>Это демонстрация текстового редактора.</p>');
+        }, 500);
+    </script>
+</body>
+</html>
