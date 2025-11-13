@@ -1,0 +1,455 @@
+:root {
+    --primary-color: #007bff;
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --border-color: #dee2e6;
+    --toolbar-bg: #f8f9fa;
+    --sidebar-width: 250px;
+}
+
+.editor-container {
+    display: grid;
+    grid-template-areas: 
+        "toolbar toolbar"
+        "content sidebar"
+        "status status";
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 1fr var(--sidebar-width);
+    height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.toolbar {
+    grid-area: toolbar;
+    background: var(--toolbar-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.toolbar-group {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+    padding: 0.25rem;
+    border-right: 1px solid var(--border-color);
+}
+
+.toolbar-group:last-child {
+    border-right: none;
+}
+
+.toolbar-btn {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    border-radius: 4px;
+    cursor: pointer;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.toolbar-btn:hover:not(:disabled) {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.toolbar-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.toolbar-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.toolbar-select {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    min-width: 120px;
+    font-size: 0.875rem;
+}
+
+/* Dropdown стили */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.5rem;
+    z-index: 1000;
+    min-width: 150px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.dropdown-menu.color-picker {
+    min-width: 200px;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.color-option {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.color-option:hover {
+    border-color: var(--primary-color);
+}
+
+.custom-color {
+    width: 100%;
+    height: 2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+/* Стили для переключателя режимов */
+.mode-switcher {
+    margin-left: auto;
+}
+
+.mode-btn {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.mode-btn:first-child {
+    border-radius: 4px 0 0 4px;
+}
+
+.mode-btn:last-child {
+    border-radius: 0 4px 4px 0;
+}
+
+.mode-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Группа экспорта */
+.export-group {
+    border-left: 1px solid var(--border-color);
+}
+
+.editor-content {
+    grid-area: content;
+    padding: 1rem;
+    overflow: auto;
+}
+
+.visual-editor {
+    min-height: 500px;
+    outline: none;
+    line-height: 1.6;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1rem;
+}
+
+.visual-editor:focus {
+    border-color: var(--primary-color);
+}
+
+.html-editor,
+.bbcode-editor {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    font-family: 'Courier New', monospace;
+    resize: none;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1rem;
+}
+
+.sidebar {
+    grid-area: sidebar;
+    background: var(--toolbar-bg);
+    border-left: 1px solid var(--border-color);
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+/* Стили для пресетов в сайдбаре */
+.style-presets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.preset {
+    padding: 0.75rem 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    word-break: break-word;
+}
+
+.preset:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.preset.custom-preset {
+    border-color: #007bff;
+    position: relative;
+}
+
+.preset.custom-preset::after {
+    content: '★';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 0.75rem;
+    color: #007bff;
+}
+
+/* Контекстное меню */
+.preset-context-menu {
+    font-size: 0.875rem;
+    min-width: 160px;
+}
+
+.preset-context-menu .menu-item {
+    padding: 0.5em 0.75em;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.preset-context-menu .menu-item:hover {
+    background: #f8f9fa;
+}
+
+.preset-context-menu hr {
+    margin: 0.25em 0;
+    border: none;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Примененные стили в редакторе */
+.visual-editor .preset-neutral,
+.visual-editor .preset-accent,
+.visual-editor .preset-success,
+.visual-editor .preset-warning,
+.visual-editor .preset-error,
+.visual-editor .preset-info,
+.visual-editor .preset-card,
+.visual-editor .preset-badge,
+.visual-editor .preset-quote {
+    display: inline-block;
+    margin: 0.125em;
+}
+
+.visual-editor .preset-card,
+.visual-editor .preset-quote {
+    display: block;
+    margin: 1em 0;
+}
+
+.status-bar {
+    grid-area: status;
+    background: var(--toolbar-bg);
+    border-top: 1px solid var(--border-color);
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* Стили для изображений */
+.image-wrapper {
+    display: inline-block;
+    position: relative;
+    margin: 0.5em;
+    vertical-align: top;
+}
+
+.image-wrapper.selected {
+    outline: 2px solid #007bff;
+    border-radius: 4px;
+}
+
+.image-wrapper img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.image-resize-handle {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 12px;
+    height: 12px;
+    background: #007bff;
+    border: 2px solid white;
+    border-radius: 50%;
+    cursor: nwse-resize;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.image-wrapper:hover .image-resize-handle,
+.image-wrapper.selected .image-resize-handle {
+    opacity: 1;
+}
+
+.image-toolbar {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    border-radius: 4px;
+    padding: 4px;
+    display: none;
+    gap: 2px;
+    z-index: 1000;
+}
+
+.image-wrapper.selected .image-toolbar {
+    display: flex;
+}
+
+.image-btn {
+    background: #555;
+    border: none;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.image-btn:hover {
+    background: #666;
+}
+
+.image-btn[data-action="delete"] {
+    background: #dc3545;
+}
+
+.image-btn[data-action="delete"]:hover {
+    background: #c82333;
+}
+
+/* Drag & drop стили */
+.visual-editor.drag-over {
+    background: #f8f9fa;
+    outline: 2px dashed #007bff;
+    outline-offset: -2px;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .toolbar {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .toolbar-group {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding: 0.5rem;
+    }
+    
+    .mode-switcher {
+        margin-left: 0;
+        order: -1;
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .editor-container {
+        grid-template-areas: 
+            "toolbar"
+            "content"
+            "sidebar"
+            "status";
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto auto;
+    }
+    
+    .sidebar {
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .toolbar-group {
+        flex-wrap: wrap;
+    }
+    
+    .toolbar-select {
+        min-width: 100px;
+    }
+    
+    .dropdown-menu {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    /* Мобильные стили для изображений */
+    .image-toolbar {
+        top: -45px;
+    }
+    
+    .image-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+    
+    .image-resize-handle {
+        width: 16px;
+        height: 16px;
+    }
+}
